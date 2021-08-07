@@ -5,6 +5,45 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>day-8</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <canvas id="draw" width="800" height="800"> </canvas>
+    <script>
+      let canvas = document.querySelector("#draw");
+      let context = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      context.lineCap = "round";
+      context.lineJoin = "round";
+      context.lineWidth = 100;
+      let isDraw = false;
+      let lastX = 0;
+      let lastY = 0;
+      let hue = 0;
+      function mouseMove(e) {
+        if (!isDraw) return;
+        console.log(e);
+        context.beginPath();
+        context.moveTo(lastX, lastY);
+        context.lineTo(e.offsetX, e.offsetY);
+        context.strokeStyle = `hsl(${hue},100%,50%)`;
+        context.stroke();
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+        hue++;
+      }
+      canvas.addEventListener("mousedown", (e) => {
+        isDraw = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+      });
+      canvas.addEventListener("mousemove", mouseMove);
+      canvas.addEventListener("mouseup", () => (isDraw = false));
+      canvas.addEventListener("mouseout", () => (isDraw = false));
+    </script>
+  </body>
 </html>
